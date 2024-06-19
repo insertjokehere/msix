@@ -1,13 +1,15 @@
 import 'dart:io';
-import 'package:msix/src/context_menu_configuration.dart';
-import 'package:path/path.dart' as p;
+
 import 'package:args/args.dart';
 import 'package:cli_util/cli_logging.dart';
 import 'package:get_it/get_it.dart';
+import 'package:msix/src/context_menu_configuration.dart';
 import 'package:package_config/package_config.dart';
+import 'package:path/path.dart' as p;
 import 'package:path/path.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart';
+
 import 'command_line_converter.dart';
 import 'method_extensions.dart';
 import 'sign_tool.dart';
@@ -358,11 +360,19 @@ class Configuration {
 
     _logger.trace('validating build files');
 
-    if (!await Directory(buildFilesFolder).exists() ||
-        !await Directory(buildFilesFolder)
-            .list()
-            .any((file) => file.path.endsWith('.exe'))) {
+    if (!await Directory(buildFilesFolder).exists()) {
       throw 'Build files not found at $buildFilesFolder, first run "flutter build windows" then try again';
+    }
+
+    var directoryList = await Directory(buildFilesFolder).list().toList();
+    if (!directoryList.any((file) => file.path.endsWith('.exe'))) {
+      throw 'Build files not found at $buildFilesFolder, first run "flutter build windows" then try again';
+    }
+
+    for (String vc_name in ["msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll"]) {
+      if (!directoryList.any((file) => file.path.endsWith(vc_name))) {
+        _logger.stderr("Required MSVC runtime library ${vc_name} not found in ${buildFilesFolder}! Build will continue, but package may not work as intended");
+      }
     }
 
     executableFileName = await Directory(buildFilesFolder)

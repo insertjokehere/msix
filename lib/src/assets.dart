@@ -260,15 +260,6 @@ class Assets {
       await Directory(_config.defaultsIconsFolderPath)
           .copyDirectory(Directory(_msixIconsFolderPath));
 
-  /// Copy the VC libs files (msvcp140.dll, vcruntime140.dll, vcruntime140_1.dll)
-  Future<void> copyVCLibsFiles() async {
-    _logger.trace('copying VC libraries');
-
-    await Directory(
-            p.join(_config.msixAssetsPath, 'VCLibs', _config.architecture))
-        .copyDirectory(Directory(_config.buildFilesFolder));
-  }
-
   Future<void> copyContextMenuDll(String dllPath) async {
     _logger.trace('copying context menu dll');
 
@@ -290,9 +281,6 @@ class Assets {
         'resources.scale-150.pri',
         'resources.scale-200.pri',
         'resources.scale-400.pri',
-        'msvcp140.dll',
-        'vcruntime140_1.dll',
-        'vcruntime140.dll',
         ..._config.contextMenuConfiguration?.comSurrogateServers
                 .map((server) => basename(server.dllPath))
                 .toList() ??

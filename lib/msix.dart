@@ -112,7 +112,6 @@ class Msix {
     Assets assets = Assets();
     await assets.cleanTemporaryFiles(clearMsixFiles: true);
     await assets.createIcons();
-    await assets.copyVCLibsFiles();
 
     if (_config.contextMenuConfiguration?.comSurrogateServers.isNotEmpty ==
         true) {
