@@ -74,27 +74,6 @@ void main() {
     await Future.delayed(const Duration(milliseconds: 100));
   });
 
-  test('copy vclibs files', () async {
-    var vclibsFolderPath = p.join(tempFolderPath, 'VCLibs', 'x64');
-    await File(p.join(vclibsFolderPath, 'msvcp140.dll'))
-        .create(recursive: true);
-    await File(p.join(vclibsFolderPath, 'vcruntime140_1.dll'))
-        .create(recursive: true);
-    await File(p.join(vclibsFolderPath, 'vcruntime140.dll'))
-        .create(recursive: true);
-    await Future.delayed(const Duration(milliseconds: 100));
-    config
-      ..msixAssetsPath = tempFolderPath
-      ..architecture = 'x64';
-    await Assets().copyVCLibsFiles();
-    await Future.delayed(const Duration(milliseconds: 100));
-    expect(await File(p.join(vclibsFolderPath, 'msvcp140.dll')).exists(), true);
-    expect(await File(p.join(vclibsFolderPath, 'vcruntime140_1.dll')).exists(),
-        true);
-    expect(await File(p.join(vclibsFolderPath, 'vcruntime140.dll')).exists(),
-        true);
-  });
-
   test('copy context menu dll', () async {
     var dllFile = await File(p.join(tempFolderPath, 'test', 'ContextMenu.dll'))
         .create(recursive: true);
