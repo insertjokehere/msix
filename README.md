@@ -26,6 +26,8 @@ the following command:
 PS c:\src\flutter_project> flutter pub add --dev msix
 ```
 
+Configure your project to include the Microsoft Visual C++ Runtime Libraries in your build output - the easiest way to do this is to use the [msvcredist](https://github.com/insertjokehere/flutter_msvcredist) package.
+
 ## 📦 Creating an MSIX installer
 
 To create a MSIX installer, run the following command:
